@@ -18,10 +18,7 @@ export default class CesiumGlobe extends Component {
     }
 
     componentDidMount() {
-        const imageryProvider = new BingMapsImageryProvider({
-            url : BING_MAPS_URL,
-            key : BING_MAPS_KEY,
-        });
+        const imageryProvider = this.props.imageryProvider;
 
         const terrainProvider = new CesiumTerrainProvider({
             url : STK_TERRAIN_URL
@@ -45,90 +42,9 @@ export default class CesiumGlobe extends Component {
 
         // Force immediate re-render now that the Cesium viewer is created
         this.setState({viewerLoaded : true}); // eslint-disable-line react/no-did-mount-set-state
-
-        const czml = [{
-            "id" : "document",
-            "name" : "Basic CZML billboard and label",
-            "version" : "1.0"
-        },
-        {
-            "id" : "some-unique-id",
-            "name" : "Label Example",
-            "description" : "<p><a href='http://www.agi.com' target='_blank'>Analytical Graphics, Inc.</a> (AGI) founded Cesium.</p>",
-            "billboard" : {
-                // "image" : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACvSURBVDhPrZDRDcMgDAU9GqN0lIzijw6SUbJJygUeNQgSqepJTyHG91LVVpwDdfxM3T9TSl1EXZvDwii471fivK73cBFFQNTT/d2KoGpfGOpSIkhUpgUMxq9DFEsWv4IXhlyCnhBFnZcFEEuYqbiUlNwWgMTdrZ3JbQFoEVG53rd8ztG9aPJMnBUQf/VFraBJeWnLS0RfjbKyLJA8FkT5seDYS1Qwyv8t0B/5C2ZmH2/eTGNNBgMmAAAAAElFTkSuQmCC",
-                "scale" : 1.5
-            },
-            "label" : {
-                // "fillColor" : {
-                //     "rgba" : [255, 255, 255, 255]
-                // },
-                "font" : "12pt Courier",
-                "horizontalOrigin" : "CENTER",
-                "pixelOffset" : {
-                    "cartesian2" : [8, 0]
-                },
-                "style" : "FILL",
-                "text" : "세운상가",
-                "showBackground" : true,
-                "backgroundColor" : {
-                    "rgba" : [0, 0, 0, 0.8]
-                }
-            },
-            "position" : {
-                "cartographicDegrees": [
-                    126.9957624,
-                    37.5698943,
-                    0,
-                ]
-            },
-
-        },
-        // {
-        //     "id" : "point 1",
-        //     "name": "point",
-        //     "position" : {
-        //         "cartographicDegrees": [
-        //             126.9957624,
-        //             37.5698943,
-        //             0,
-        //         ]
-        //     },
-        //     "point": {
-        //         "color": {
-        //             "rgba": [255, 255, 255, 255]
-        //         },
-        //         // "outlineColor": {
-        //         //     "rgba": [255, 0, 0, 255]
-        //         // },
-        //         // "outlineWidth" : 4,
-        //         "pixelSize": 20
-        //     }
-        // },
-        // {
-        //     "id" : "point 1",
-        //     "name": "point",
-        //     "position" : {
-        //         "cartographicDegrees": [
-        //             126.9957624,
-        //             36.5698943,
-        //             0,
-        //         ]
-        //     },
-        //     "point": {
-        //         "color": {
-        //             "rgba": [255, 255, 255, 255]
-        //         },
-        //         "outlineColor": {
-        //             "rgba": [255, 0, 0, 255]
-        //         },
-        //         "outlineWidth" : 4,
-        //         "pixelSize": 20
-        //     }
-        // }
-    ];
-
-        this.viewer.dataSources.add(window.Cesium.CzmlDataSource.load(czml));
+        if (this.props.onload) {
+          this.props.onload(this.viewer);
+        }
     }
 
     componentWillUnmount() {

@@ -6,6 +6,8 @@ import injectSheet from 'react-jss';
 
 import UploadScreen from './screens/UploadScreen';
 
+const { Cesium } = window;
+
 const styles = {
   App: {
     'height': '100vh',
@@ -44,9 +46,22 @@ class App extends Component {
 
           </div>
           <div className={classes.main}>
-            <CesiumGlobe>
+            <CesiumGlobe
+              imageryProvider={Cesium.createOpenStreetMapImageryProvider({
+                url : 'https://stamen-tiles.a.ssl.fastly.net/toner/',
+                credit : 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.'
+              })}
+              onload={viewer => {
+                const dataSourcePromise = Cesium.CzmlDataSource.load('/data/czml/test1.czml');
+                viewer.dataSources.add(dataSourcePromise);
+                dataSourcePromise.then(src => {
+                  const firstEntity = src.entities.values[0];
+                  viewer.scene.camera.lookAt(firstEntity.position.getValue(viewer.clock.currentTime), new Cesium.Cartesian3(0,0,1000));
 
-            </CesiumGlobe>
+                })
+
+              }}
+            />
           </div>
         </div>
       </div>

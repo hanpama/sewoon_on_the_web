@@ -38,22 +38,37 @@ connectionPromise.then(async connection => {
 
     await writeFile(
       path.join(exportDir, 'czml', `${collection.name}.czml`),
-      JSON.stringify(collection.models.map(
-        model => ({
-          id: model.id,
-          position: {
-            cartographicDegrees: [
-              model.longitude,
-              model.latitude,
-              model.altitude,
-            ],
-          },
-          model: {
-            gltf: `${servicePrefix}/gltf/${model.gltf.id}.gltf`,
-            scale: 1,
-          },
-        })
-      )),
+      JSON.stringify([
+        {
+          "id": "document",
+          "name": collection.name,
+          "version": "1.0",
+          "clock": {
+              "interval": "2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+              "currentTime": "2012-03-15T10:00:00Z",
+              "multiplier": 60,
+              "range": "LOOP_STOP",
+              "step": "SYSTEM_CLOCK_MULTIPLIER"
+          }
+        }
+        ,
+        ...collection.models.map(
+          model => ({
+            id: model.id,
+            position: {
+              cartographicDegrees: [
+                model.longitude,
+                model.latitude,
+                model.altitude,
+              ],
+            },
+            model: {
+              gltf: `${servicePrefix}/gltf/${model.gltf.id}.gltf`,
+              scale: 1,
+            },
+          })
+        )
+      ]),
     )
   }))
 
