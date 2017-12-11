@@ -21,7 +21,7 @@ export class HeroMap extends React.Component {
           viewer.clock.shouldAnimate = true //if it was paused.
 
 
-          const dataSourcePromise = loadCzmlData('all');
+          const dataSourcePromise = loadCzmlData('sewoon_new');
           viewer.dataSources.add(dataSourcePromise);
           dataSourcePromise.then(src => {
             const firstEntity = src.entities.values[0];
@@ -30,6 +30,7 @@ export class HeroMap extends React.Component {
               new Cesium.Cartesian3(-500, -500, 500)
             );
           });
+          viewer.dataSources.add(loadCzmlData('all'));
         }}
       />
     );
