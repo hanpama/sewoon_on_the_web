@@ -8,7 +8,8 @@
     "test:watch": "jest --watch",
     "docker:build": "tsc && docker build -t hanpama/c2g .",
     "docker:test": "docker run --rm hanpama/c2g npm test",
-    "docker:convert": "tsc && docker run --rm -v $(pwd)/build:/var/app/build -v $(pwd)/kmzmodels:/var/kmzmodels -v $(pwd)/browser/public/czml:/var/export hanpama/c2g node build/src/convert_kmzmodels.js"
+    "docker:convert": "tsc && docker run --rm -v $(pwd)/build:/var/app/build -v $(pwd)/kmzmodels:/var/kmzmodels -v $(pwd)/browser/public/data:/var/export hanpama/c2g node build/src/convert_kmzmodels.js",
+    "build": "npm run docker:convert && cd browser && npm run build && cd ../ && rm -rf docs && mv browser/build docs"
   },
   "keywords": [],
   "author": "",

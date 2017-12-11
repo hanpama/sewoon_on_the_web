@@ -11,7 +11,7 @@ const exec = promisify(child_process.exec);
 const readdir = promisify(fs.readdir);
 const writeFile= promisify(fs.writeFile);
 
-const servicePrefix = '/gisdata';
+const servicePrefix = '/data';
 const modelsDir = '/var/kmzmodels/';
 const exportDir = '/var/export/';
 
@@ -26,8 +26,6 @@ connectionPromise.then(async connection => {
   const collections = await Promise.all(files.map(async fn => {
     return await importKmzFile(connection, path.join(modelsDir, fn));
   }));
-
-  // console.log(JSON.stringify(results));
 
   await Promise.all(collections.map(async collection => {
 
