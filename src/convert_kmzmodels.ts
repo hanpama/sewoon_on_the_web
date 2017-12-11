@@ -11,7 +11,7 @@ const exec = promisify(child_process.exec);
 const readdir = promisify(fs.readdir);
 const writeFile= promisify(fs.writeFile);
 
-const servicePrefix = '/data';
+// const servicePrefix = '/data';
 const modelsDir = '/var/kmzmodels/';
 const exportDir = '/var/export/';
 
@@ -55,7 +55,7 @@ connectionPromise.then(async connection => {
               ],
             },
             model: {
-              gltf: `${servicePrefix}/gltf/${model.gltf.id}.gltf`,
+              gltf: `../gltf/${model.gltf.id}.gltf`,
             },
           })
         )
