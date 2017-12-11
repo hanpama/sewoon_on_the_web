@@ -1,7 +1,8 @@
 {
   "name": "browser",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "homepage": "https://hanpama.github.io/sewoon_on_the_web",
   "dependencies": {
     "cesium": "^1.39.0",
     "isomorphic-fetch": "^2.2.1",
