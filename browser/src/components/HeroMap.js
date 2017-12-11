@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CesiumGlobe from '../cesium/CesiumGlobe';
+import { loadCzmlData } from '../loadCzmlData';
 
 const { Cesium } = window;
 
@@ -20,7 +21,7 @@ export class HeroMap extends React.Component {
           viewer.clock.shouldAnimate = true //if it was paused.
 
 
-          const dataSourcePromise = Cesium.CzmlDataSource.load('/data/czml/all.czml');
+          const dataSourcePromise = loadCzmlData('all');
           viewer.dataSources.add(dataSourcePromise);
           dataSourcePromise.then(src => {
             const firstEntity = src.entities.values[0];
