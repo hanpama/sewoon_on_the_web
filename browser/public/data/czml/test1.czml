@@ -1,1 +1,1 @@
-[{"id":"document","name":"test1","version":"1.0","clock":{"interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z","currentTime":"2012-03-15T10:00:00Z","multiplier":60,"range":"LOOP_STOP","step":"SYSTEM_CLOCK_MULTIPLIER"}},{"id":1,"position":{"cartographicDegrees":[126.9953870773,37.56835818648,0]},"model":{"gltf":"/data/gltf/1.gltf","scale":1}}]
+[{"id":"document","name":"test1","version":"1.0"},{"id":1,"position":{"cartographicDegrees":[126.9953870773,37.56835818648,0]},"model":{"gltf":"/data/gltf/1.gltf"}}]

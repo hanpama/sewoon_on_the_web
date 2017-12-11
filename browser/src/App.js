@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 
-import CesiumGlobe from './cesium/CesiumGlobe';
+
 import injectSheet from 'react-jss';
 
 import UploadScreen from './screens/UploadScreen';
+import { HeroMap } from './components/HeroMap';
 
-const { Cesium } = window;
 
 const styles = {
   App: {
@@ -24,7 +24,7 @@ const styles = {
   },
   main: {
     width: '100%',
-    height: '100%',
+    height: '50%',
   },
   appname: {
     'font-size': '21px',
@@ -46,22 +46,8 @@ class App extends Component {
 
           </div>
           <div className={classes.main}>
-            <CesiumGlobe
-              imageryProvider={Cesium.createOpenStreetMapImageryProvider({
-                url : 'https://stamen-tiles.a.ssl.fastly.net/toner/',
-                credit : 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.'
-              })}
-              onload={viewer => {
-                const dataSourcePromise = Cesium.CzmlDataSource.load('/data/czml/test1.czml');
-                viewer.dataSources.add(dataSourcePromise);
-                dataSourcePromise.then(src => {
-                  const firstEntity = src.entities.values[0];
-                  viewer.scene.camera.lookAt(firstEntity.position.getValue(viewer.clock.currentTime), new Cesium.Cartesian3(0,0,1000));
-
-                })
-
-              }}
-            />
+            <HeroMap />
+            <div>Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.</div>
           </div>
         </div>
       </div>

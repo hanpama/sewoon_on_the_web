@@ -19,12 +19,10 @@ export default class CesiumGlobe extends Component {
 
     componentDidMount() {
         const imageryProvider = this.props.imageryProvider;
-
-        const terrainProvider = new CesiumTerrainProvider({
-            url : STK_TERRAIN_URL
-        });
+        const terrainProvider = this.props.terrainProvider;
 
         this.viewer = new Viewer(this.cesiumContainer, {
+            shadows: this.props.shadows || false,
             animation : false,
             baseLayerPicker : false,
             fullscreenButton : false,

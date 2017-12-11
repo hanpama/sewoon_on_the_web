@@ -43,15 +43,7 @@ connectionPromise.then(async connection => {
           "id": "document",
           "name": collection.name,
           "version": "1.0",
-          "clock": {
-              "interval": "2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
-              "currentTime": "2012-03-15T10:00:00Z",
-              "multiplier": 60,
-              "range": "LOOP_STOP",
-              "step": "SYSTEM_CLOCK_MULTIPLIER"
-          }
-        }
-        ,
+        },
         ...collection.models.map(
           model => ({
             id: model.id,
@@ -64,7 +56,6 @@ connectionPromise.then(async connection => {
             },
             model: {
               gltf: `${servicePrefix}/gltf/${model.gltf.id}.gltf`,
-              scale: 1,
             },
           })
         )
