@@ -9,6 +9,10 @@ import injectSheet from 'react-jss';
 import UploadScreen from './screens/UploadScreen';
 import { HeroMap } from './components/HeroMap';
 import { Header } from './components/Header';
+import { Work } from './components/Work';
+
+import { data } from './data';
+import { Competition } from './components/Competition';
 
 const dummyModelList = [
   {
@@ -50,6 +54,36 @@ const styles = {
 };
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedWorkIds: [],
+    };
+  }
+
+  activateWork(workId) {
+    this.setState({
+      selectedWorkIds: [...this.state.selectedWorkIds, workId],
+    });
+    console.log(workId);
+  }
+  deactivateWork(workId) {
+    this.setState({
+      selectedWorkIds: this.state.selectedWorkIds.filter(item => item !== workId),
+    });
+    console.log(workId);
+  }
+  isSelectedWork(workId) {
+    return this.state.selectedWorkIds.indexOf(workId) !== -1
+  }
+
+  workViewContext = {
+    activateWork: this.activateWork.bind(this),
+    deactivateWork: this.deactivateWork.bind(this),
+    isSelectedWork: this.isSelectedWork.bind(this),
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -60,22 +94,32 @@ class App extends Component {
         <Header />
 
         <div className={classes.main}>
-          <HeroMap />
+          <HeroMap workIds={this.state.selectedWorkIds} />
           <h1 className={classes.overlaidTitle}>을지로 일대의 건축물들</h1>
         </div>
 
         <Grid container>
 
-          <Grid item xs={12} md={3}>
-            <ul>
-              {dummyModelList.map((model, idx) => (
-                idx === selectedModelIndex
-                ? <li>{model.name}</li>
-                : <li>{model.name}</li>
-              ))}
-            </ul>
+          <Grid item xs={12} md={4}>
+            {data.map((row) => (
+              row.type === 'competition' ?
+              (
+                <Competition
+                  competition={row}
+                  workViewContext={this.workViewContext}
+                />
+              ) :
+              (
+                <div>
+                  <Work
+                    work={row}
+                    workViewContext={this.workViewContext}
+                  />
+                </div>
+              )
+            ))}
           </Grid>
-          <Grid item xs={12} md={9}>
+          <Grid item xs={12} md={8}>
             <p>
               { dummyModelList[selectedModelIndex].description }
             </p>

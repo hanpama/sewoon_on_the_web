@@ -1,1 +1,1 @@
-[{"id":"document","name":"test1","version":"1.0"},{"id":1,"position":{"cartographicDegrees":[126.9953870773,37.56835818648,0]},"model":{"gltf":"../gltf/1.gltf"}}]
+[{"id":"document","name":"test1","version":"1.0"},{"id":12,"position":{"cartographicDegrees":[126.9953870773,37.56835818648,0]},"model":{"gltf":"../gltf/12.gltf"}}]
