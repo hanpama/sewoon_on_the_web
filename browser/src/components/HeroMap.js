@@ -23,6 +23,7 @@ export class HeroMap extends React.Component {
     if (!viewer) {
       return;
     }
+    console.log('received props');
 
     const removedIds = [];
     const addedIds = [];
