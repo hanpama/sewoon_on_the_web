@@ -1,6 +1,12 @@
 export const data = [
   {
     type: 'plan',
+    id: 'all',
+    year: null,
+    title: '현재의 세운상가 일대'
+  },
+  {
+    type: 'plan',
     id: '1',
     year: 1930,
     title: '소개도로 조성 작업',

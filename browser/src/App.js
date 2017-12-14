@@ -32,13 +32,14 @@ const dummyModelList = [
 
 const styles = {
   App: {
-    'max-width': '1020px',
-    'margin': '0 auto',
+    // 'max-width': '1020px',
+    // 'margin': '0 auto',
   },
   main: {
-    width: '100%',
-    height: '40vh',
-    position: 'relative',
+
+    width: '80%',
+    height: '100vh',
+    position: 'fixed',
   },
   overlaidTitle: {
     position: 'absolute',
@@ -59,12 +60,14 @@ class App extends Component {
     super(props);
     this.state = {
       selectedWorkIds: [],
+      lastSelectedWorkId: null,
     };
   }
 
   activateWork(workId) {
     this.setState({
       selectedWorkIds: [...this.state.selectedWorkIds, workId],
+      lastSelectedWorkId: workId,
     });
     console.log(workId);
   }
@@ -76,6 +79,16 @@ class App extends Component {
   }
   isSelectedWork(workId) {
     return this.state.selectedWorkIds.indexOf(workId) !== -1
+  }
+  getNodeById(id) {
+    for (let item of data) {
+      if (item.id === id) { return item; }
+      if (item.works) {
+        for (let work of item.works) {
+          if (work.id === id) { return item; }
+        }
+      }
+    }
   }
 
   workViewContext = {
@@ -91,16 +104,10 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
-        <Header />
-
-        <div className={classes.main}>
-          <HeroMap workIds={this.state.selectedWorkIds} />
-          <h1 className={classes.overlaidTitle}>을지로 일대의 건축물들</h1>
-        </div>
-
         <Grid container>
 
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} style={{ padding: '20px' }}>
+            <Header />
             {data.map((row) => (
               row.type === 'competition' ?
               (
@@ -120,9 +127,16 @@ class App extends Component {
             ))}
           </Grid>
           <Grid item xs={12} md={8}>
-            <p>
-              { dummyModelList[selectedModelIndex].description }
-            </p>
+
+
+            <div className={classes.main}>
+              <HeroMap workIds={this.state.selectedWorkIds} />
+              <h1 className={classes.overlaidTitle}>{
+                this.lastSelectedWorkId
+                ? this.getNodeById(this.lastSelectedWorkId).title
+                : ''
+              }</h1>
+            </div>
             <div>Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.</div>
           </Grid>
         </Grid>

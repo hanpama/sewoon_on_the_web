@@ -29,7 +29,7 @@ export class Work extends React.Component {
             value={work.title}
           />
         }
-        label={work.title}
+        label={work.year ? `${work.title} - ${work.year}` : work.title}
       />
     );
   }

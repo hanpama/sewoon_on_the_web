@@ -8,7 +8,7 @@ export class Competition extends React.Component {
 
     return (
       <div>
-        <h4>{competition.title}</h4>
+        <h4>[{competition.year}] {competition.title}</h4>
         {
           competition.works.map(work => (
             <div>
