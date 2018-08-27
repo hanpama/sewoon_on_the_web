@@ -7,13 +7,12 @@ RUN apt-get install -y \
 
 RUN npm install -g yarn
 
-RUN mkdir -p /var/app
+# RUN mkdir -p /var/app
 
-ADD ./package.json ./var/app/
-WORKDIR /var/app
+ADD ./package.json /app/
+WORKDIR /app
 RUN yarn
 
-ADD . /var/app
-RUN chmod +x COLLADA2GLTF-v2.0-linux/COLLADA2GLTF-bin
+ADD . /app
 
 CMD npm start

@@ -1,18 +1,17 @@
-version: '3'
+# for test
+version: '3.3'
+
 services:
-
-  # postgres:
-  #   image: "postgres:9.6.1"
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     POSTGRES_USER: "test"
-  #     POSTGRES_PASSWORD: "test"
-  #     POSTGRES_DB: "test"
-
-  sow_server:
-    image: hanpama/c2g
+  couchdb:
+    image: apache/couchdb
     volumes:
-    - ./test:/var/app/test
-    - ./src:/var/app/src
-    command: npm run test
+      - ./tmp/data:/opt/couchdb/data
+    environment:
+      COUCHDB_USER: test
+      COUCHDB_PASSWORD: verystrongpassword
+    ports:
+      - 15984:5984
+
+  server:
+    image: hanpama/sewoon-on-the-web-server
+    build: .

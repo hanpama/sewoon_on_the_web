@@ -29,7 +29,7 @@ connectionPromise.then(async connection => {
 
   await Promise.all(collections.map(async collection => {
 
-    await Promise.all(collection.models.map(model => (
+    await Promise.all(collection.modelObjects.map(model => (
       writeFile(
         path.join(exportDir, 'gltf', `${model.gltf.id}.gltf`),
         model.gltf.data,
@@ -44,7 +44,7 @@ connectionPromise.then(async connection => {
           "name": collection.name,
           "version": "1.0",
         },
-        ...collection.models.map(
+        ...collection.modelObjects.map(
           model => ({
             id: model.id,
             position: {

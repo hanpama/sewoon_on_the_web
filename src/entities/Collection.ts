@@ -1,16 +1,27 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ModelObject } from './ModelObject';
+import { Model, field } from 'couchrelay';
+import { ObjectType, gql } from 'girin';
 
-@Entity()
-export class Collection {
+import { ModelObject, ModelObjectConnection } from './ModelObject';
 
-  @PrimaryGeneratedColumn()
-  id: number;
 
-  @Column()
-  name: string;
+@ObjectType.define(gql`
+  type Collection {
+    id: String!
+    name: String!
+    modelObjects: ${() => ModelObjectConnection}
+  }
+`)
+export class Collection extends Model {
 
-  @OneToMany(type => ModelObject, modelObject => modelObject.collection)
-  models: ModelObject[];
+  @field('_id') id: string;
+  @field() name: string;
+  // @field() ownerId: string;
 
+  modelObjects(connectionArgs: any) {
+    const { _id } = this;
+    console.log(this);
+    return ModelObject.byCollectionId
+      .getConnection({ selectors: [{ collectionId: _id }] })
+      .exec(connectionArgs);
+  }
 }
