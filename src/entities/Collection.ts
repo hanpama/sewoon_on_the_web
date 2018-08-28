@@ -2,6 +2,7 @@ import { Model, field } from 'couchrelay';
 import { ObjectType, gql } from 'girin';
 
 import { ModelObject, ModelObjectConnection } from './ModelObject';
+import { HOST, APP_PORT } from '../environment';
 
 
 @ObjectType.define(gql`
@@ -18,12 +19,12 @@ export class Collection extends Model {
   @field() name: string;
   // @field() ownerId: string;
   czml() {
-    return `/czml/${this.id}`;
+    return `${HOST}:${APP_PORT}/czml/${this.id}`;
   }
 
   modelObjects(connectionArgs?: any) {
     const { _id } = this;
-    console.log(this);
+    // console.log(this);
     return ModelObject.byCollectionId
       .getConnection({ selectors: [{ collectionId: _id }] })
       .exec(connectionArgs);

@@ -1,27 +1,31 @@
-import { ensureDatabaseReady } from './environment';
+import { ensureDatabaseReady, APP_PORT, HOST } from './environment';
 
 import { ApolloServer } from 'apollo-server-express';
 import { schema } from './schema';
 import * as express from 'express';
-import { czml, gltf } from './routes';
+import { czml, gltf, kmz } from './routes';
+import { Server } from 'http';
 
 
-async function main() {
+function main() {
+  return new Promise<Server>(async (resolve, _reject) => {
 
+    await ensureDatabaseReady();
 
-  await ensureDatabaseReady();
+    const app = express();
+    const apolloServer = new ApolloServer({ schema });
 
-  const app = express();
-  const server = new ApolloServer({ schema });
+    czml.load(app);
+    gltf.load(app);
+    kmz.load(app);
 
-  app.get(czml.path, czml.handler);
-  app.get(gltf.path, gltf.handler);
+    apolloServer.applyMiddleware({ app, path: '/graphql' }); // app is from an existing express app
 
-  server.applyMiddleware({ app, path: '/graphql' }); // app is from an existing express app
-
-  app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-  );
+    const server = app.listen({ port: APP_PORT }, () => {
+      console.log(`🚀 Server ready at ${HOST}:${APP_PORT}${apolloServer.graphqlPath}`);
+      resolve(server);
+    });
+  });
 }
 
-main();
+export const appReady = main();

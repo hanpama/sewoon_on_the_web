@@ -12,6 +12,6 @@ services:
     ports:
       - 15984:5984
 
-  server:
-    image: hanpama/sewoon-on-the-web-server
-    build: .
+  # server:
+  #   image: hanpama/sewoon-on-the-web-server
+  #   build: .

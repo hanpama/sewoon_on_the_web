@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, Express } from "express";
 import * as proxy from 'http-proxy';
 
 import { ModelObject } from "../entities";
@@ -16,4 +16,8 @@ export function handler(req: Request, res: Response) {
     target: `${ModelObject.dbURL}/${modelId}/model.glb`,
     headers: globalConfig.headers,
   });
+}
+
+export function load(app: Express, prefix: string = '') {
+  app.get(prefix.concat(path), handler);
 }

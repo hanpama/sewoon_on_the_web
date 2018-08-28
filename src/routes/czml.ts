@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
+import { Request, Response, Express } from "express";
 import * as invariant from 'invariant';
 
 import { Collection } from "../entities";
+import { HOST, APP_PORT } from "../environment";
 
-export const path = '/czml/:collectionId';
+const path = '/czml/:collectionId';
 
-export async function handler(req: Request, res: Response) {
+async function handler(req: Request, res: Response) {
   const collectionId: string = req.params.collectionId;
   invariant(collectionId, 'Field collectionId id is required');
 
@@ -31,10 +32,14 @@ export async function handler(req: Request, res: Response) {
           ],
         },
         model: {
-          gltf: `/gltf/${model.id}`,
+          gltf: `${HOST}:${APP_PORT}/gltf/${model.id}`,
         },
       })
     )
   ]));
   res.end();
+}
+
+export function load(app: Express, prefix: string = '') {
+  app.get(prefix.concat(path), handler);
 }

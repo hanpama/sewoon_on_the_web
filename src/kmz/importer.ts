@@ -71,13 +71,11 @@ export async function importKmzFile(collectionName: string, fp: string) {
 
   await exec(unzipCommand);
 
-  console.log(unzipCommand);
   const kmlFilePath = `${unzipDir}/doc.kml`;
 
   if (!(await exists(kmlFilePath))) {
     throw new Error('Invalid KMZ file(doc.kml file does not exist)');
   }
-
 
   const kmlString = (await readFile(kmlFilePath)).toString();
   const kmlData = await parseKml(kmlString);
