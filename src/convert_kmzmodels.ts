@@ -1,66 +1,66 @@
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
-import { connectionPromise } from './connection';
-import { importKmzFile } from './kmz/importer';
-import * as fs from 'fs';
-import * as path from 'path';
-import { promisify } from 'util';
-import * as child_process from 'child_process';
+// import { connectionPromise } from './connection';
+// import { importKmzFile } from './kmz/importer';
+// import * as fs from 'fs';
+// import * as path from 'path';
+// import { promisify } from 'util';
+// import * as child_process from 'child_process';
 
-const exec = promisify(child_process.exec);
-const readdir = promisify(fs.readdir);
-const writeFile= promisify(fs.writeFile);
+// const exec = promisify(child_process.exec);
+// const readdir = promisify(fs.readdir);
+// const writeFile= promisify(fs.writeFile);
 
-// const servicePrefix = '/data';
-const modelsDir = '/var/kmzmodels/';
-const exportDir = '/var/export/';
+// // const servicePrefix = '/data';
+// const modelsDir = '/var/kmzmodels/';
+// const exportDir = '/var/export/';
 
-connectionPromise.then(async connection => {
+// connectionPromise.then(async connection => {
 
-  await Promise.all([
-    exec('mkdir -p /var/export/gltf'),
-    exec('mkdir -p /var/export/czml'),
-  ])
+//   await Promise.all([
+//     exec('mkdir -p /var/export/gltf'),
+//     exec('mkdir -p /var/export/czml'),
+//   ])
 
-  const files = (await readdir(modelsDir)).filter(name => name.endsWith('.kmz'));;
-  const collections = await Promise.all(files.map(async fn => {
-    return await importKmzFile(connection, path.join(modelsDir, fn));
-  }));
+//   const files = (await readdir(modelsDir)).filter(name => name.endsWith('.kmz'));;
+//   const collections = await Promise.all(files.map(async fn => {
+//     return await importKmzFile(connection, path.join(modelsDir, fn));
+//   }));
 
-  await Promise.all(collections.map(async collection => {
+//   await Promise.all(collections.map(async collection => {
 
-    await Promise.all(collection.modelObjects.map(model => (
-      writeFile(
-        path.join(exportDir, 'gltf', `${model.gltf.id}.gltf`),
-        model.gltf.data,
-      )
-    )));
+//     await Promise.all(collection.modelObjects.map(model => (
+//       writeFile(
+//         path.join(exportDir, 'gltf', `${model.gltf.id}.gltf`),
+//         model.gltf.data,
+//       )
+//     )));
 
-    await writeFile(
-      path.join(exportDir, 'czml', `${collection.name}.czml`),
-      JSON.stringify([
-        {
-          "id": "document",
-          "name": collection.name,
-          "version": "1.0",
-        },
-        ...collection.modelObjects.map(
-          model => ({
-            id: model.id,
-            position: {
-              cartographicDegrees: [
-                model.longitude,
-                model.latitude,
-                model.altitude,
-              ],
-            },
-            model: {
-              gltf: `../gltf/${model.gltf.id}.gltf`,
-            },
-          })
-        )
-      ]),
-    )
-  }))
+//     await writeFile(
+//       path.join(exportDir, 'czml', `${collection.name}.czml`),
+//       JSON.stringify([
+//         {
+//           "id": "document",
+//           "name": collection.name,
+//           "version": "1.0",
+//         },
+//         ...collection.modelObjects.map(
+//           model => ({
+//             id: model.id,
+//             position: {
+//               cartographicDegrees: [
+//                 model.longitude,
+//                 model.latitude,
+//                 model.altitude,
+//               ],
+//             },
+//             model: {
+//               gltf: `../gltf/${model.gltf.id}.gltf`,
+//             },
+//           })
+//         )
+//       ]),
+//     )
+//   }))
 
-}).catch(console.error);
+// }).catch(console.error);

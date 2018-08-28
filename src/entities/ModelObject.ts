@@ -11,7 +11,7 @@ import { connectionDefinitions } from 'graphql-relay';
     longitude: Float!
     altitude: Float!
     description: String
-
+    gltf: String!
   }
 `)
 export class ModelObject extends Model {
@@ -21,8 +21,10 @@ export class ModelObject extends Model {
   @field() altitude: number;
   @field() description: string;
   @field() collectionId: string;
-  @field() gltfId: string;
 
+  public gltf() {
+    return `/gltf/${this.id}`;
+  }
 
   async collection() {
     return Promise.resolve(this.collectionId).then(id => {

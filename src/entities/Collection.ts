@@ -8,6 +8,7 @@ import { ModelObject, ModelObjectConnection } from './ModelObject';
   type Collection {
     id: String!
     name: String!
+    czml: String!
     modelObjects: ${() => ModelObjectConnection}
   }
 `)
@@ -16,8 +17,11 @@ export class Collection extends Model {
   @field('_id') id: string;
   @field() name: string;
   // @field() ownerId: string;
+  czml() {
+    return `/czml/${this.id}`;
+  }
 
-  modelObjects(connectionArgs: any) {
+  modelObjects(connectionArgs?: any) {
     const { _id } = this;
     console.log(this);
     return ModelObject.byCollectionId

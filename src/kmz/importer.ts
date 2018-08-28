@@ -67,15 +67,17 @@ async function insertKmlDataRecursively(node: any, context: InsertingContext, pa
 export async function importKmzFile(collectionName: string, fp: string) {
   const basename = path.basename(fp);
   const unzipDir = `${os.tmpdir()}/${basename}`;
-  const unzipCommand = `unzip ${fp} -d ${unzipDir}`;
+  const unzipCommand = `unzip -o ${fp} -d ${unzipDir}`;
 
   await exec(unzipCommand);
 
+  console.log(unzipCommand);
   const kmlFilePath = `${unzipDir}/doc.kml`;
 
   if (!(await exists(kmlFilePath))) {
     throw new Error('Invalid KMZ file(doc.kml file does not exist)');
   }
+
 
   const kmlString = (await readFile(kmlFilePath)).toString();
   const kmlData = await parseKml(kmlString);

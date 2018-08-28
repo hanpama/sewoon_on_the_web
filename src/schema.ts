@@ -34,7 +34,8 @@ export class Mutation {
   }
 `)
 export class Query {
-  static collection(_source: null, args: { id: string }) {
+  static collection(_source: null, args: { id: string }, context: any) {
+    console.log(context);
     return Collection.allDocs().getDoc(args.id);
   }
 }

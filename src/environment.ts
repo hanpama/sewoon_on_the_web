@@ -1,7 +1,13 @@
 import * as path from 'path';
 import { initModels } from './entities/init';
-import { setConfig, authenticate } from 'couchrelay';
+import { authenticate, setConfig } from 'couchrelay';
 
+
+setConfig({
+  user: 'test',
+  password: 'verystrongpassword',
+  port: 15984,
+});
 
 export async function ensureDatabaseReady(){
   await authenticate();
